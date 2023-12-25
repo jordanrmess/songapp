@@ -16,12 +16,22 @@ const spotifyApi = new SpotifyWebApi({
 
 export async function getSong(songInfo) {
   const data = await spotifyApi.clientCredentialsGrant();
+  let genre = "";
   spotifyApi.setAccessToken(data.body["access_token"]);
   const parsedSongInfo = JSON.parse(songInfo);
   console.log(parsedSongInfo);
   const BPM = parsedSongInfo.BPM;
-  let genre = parsedSongInfo.genre;
+  genre = parsedSongInfo.genre;
   console.log(typeof genre);
+  if (typeof genre === "object" && genre !== null) {
+    genre = genre.join(","); // Assuming it's an array of strings
+  } else if (typeof genre !== "string") {
+    throw new Error("Genre must be a string or an array of strings");
+  }
+  genre = genre
+    .split(",")
+    .map((s) => s.trim().replace(/\s+/g, "-"))
+    .join(",");
 
   console.log(genre);
 
@@ -31,7 +41,7 @@ export async function getSong(songInfo) {
   // console.log(genre_string);
 
   const recommendations = await spotifyApi.getRecommendations({
-    seed_genres: "country",
+    seed_genres: genre + ",pop",
     target_tempo: BPM,
     limit: 1,
   });
