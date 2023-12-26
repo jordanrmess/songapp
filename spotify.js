@@ -22,6 +22,7 @@ export async function getSong(songInfo) {
   console.log(parsedSongInfo);
   const BPM = parsedSongInfo.BPM;
   genre = parsedSongInfo.genre;
+
   console.log(typeof genre);
   if (typeof genre === "object" && genre !== null) {
     genre = genre.join(","); // Assuming it's an array of strings
@@ -41,7 +42,7 @@ export async function getSong(songInfo) {
   // console.log(genre_string);
 
   const recommendations = await spotifyApi.getRecommendations({
-    seed_genres: genre + ",pop",
+    seed_genres: genre,
     target_tempo: BPM,
     limit: 1,
   });

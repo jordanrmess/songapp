@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 import dotenv from "dotenv";
+import genreSeeds from "./genre_seeds.js"; // Import the genre seeds
+
 dotenv.config();
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -9,7 +11,9 @@ let conversationHistory = [
   {
     role: "system",
     content:
-      "You will be provided with a description of an activity and will respond with a single BPM number for music that would be ideal for that activity along with a potential genre(s) of music. Only say a number for the bpm and no other words. Return in JSON format with lowercase",
+      "You will be provided with a description of an activity and will respond with a single BPM number for music that would be ideal for that activity along with a potential genre(s) of music from the following list: " +
+      genreSeeds.join(", ") +
+      ". Only say a number for the bpm and no other words. You can have multiple genres. Return in JSON format with lowercase. The key for genres in the JSON object is 'genre'",
   },
 ];
 

@@ -1,4 +1,4 @@
-const GENRE_SEEDS = [
+const genreSeeds = [
   "acoustic",
   "afrobeat",
   "alt-rock",
@@ -126,3 +126,4 @@ const GENRE_SEEDS = [
   "work-out",
   "world-music",
 ];
+export default genreSeeds;
