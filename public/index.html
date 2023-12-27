@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Song App</title>
+<script>
+  async function sendMessage(event) {
+    event.preventDefault();
+    var message = document.getElementById('message').value;
+    
+    const response = await fetch('/message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: message })
+    });
+
+    if (response.ok) {
+      console.log("getting a response back");
+      const jsonResponse = await response.json(); // Parse the JSON response
+      // console.log(jsonResponse.response); // Make sure 'response' is the correct property
+    } else {
+      console.error('Failed to send message');
+    }
+  }
+</script>
+</head>
+<body>
+    <form onsubmit="return sendMessage(event);">
+      <input type="text" id="message" placeholder="Enter your message">
+      <button type="submit">Send</button>
+    </form>
+</body>
+</html>

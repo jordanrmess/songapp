@@ -2,14 +2,24 @@ import express from "express";
 import readline from "readline";
 import { getAIResponse } from "./openai.js";
 import { getSong } from "./spotify.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const port = 3000;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-app.use(express.json());
+app.use(express.json()); // This line is important!
+app.use(express.static(path.join(__dirname, "public")));
 
-// Start the server
-const server = app.listen(port, () => {
+//handle post request route
+app.post("/message", (req, res) => {
+  const message = req.body.message;
+  console.log("Message hitting the post request");
+  res.status(200).json({ response: message }); // Send back a JSON response
+});
+
+app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
