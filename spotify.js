@@ -19,11 +19,9 @@ export async function getSong(songInfo) {
   let genre = "";
   spotifyApi.setAccessToken(data.body["access_token"]);
   const parsedSongInfo = JSON.parse(songInfo);
-  console.log(parsedSongInfo);
   const BPM = parsedSongInfo.BPM;
   genre = parsedSongInfo.genre;
 
-  console.log(typeof genre);
   if (typeof genre === "object" && genre !== null) {
     genre = genre.join(","); // Assuming it's an array of strings
   } else if (typeof genre !== "string") {
@@ -34,13 +32,6 @@ export async function getSong(songInfo) {
     .map((s) => s.trim().replace(/\s+/g, "-"))
     .join(",");
 
-  console.log(genre);
-
-  // const genres = JSON.parse(songInfo).genre;
-  // console.log(songInfo + " " + genres);
-  // const genre_string = JSON.stringify(genres).replace(/[\[\]]/g, ""); // console.log("genres: " + genres.join(","));
-  // console.log(genre_string);
-
   const recommendations = await spotifyApi.getRecommendations({
     seed_genres: genre,
     target_tempo: BPM,
@@ -49,6 +40,5 @@ export async function getSong(songInfo) {
 
   let song = recommendations.body.tracks[0];
   let songUrl = song.external_urls.spotify;
-  console.log(songUrl);
   return songUrl;
 }
