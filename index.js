@@ -15,10 +15,8 @@ app.use(express.static(path.join(__dirname, "public")));
 //handle post request route
 app.post("/message", async (req, res) => {
   const message = req.body.message;
-
   try {
-    const spotifyURL = getSongResponse(message);
-    console.log(spotifyURL);
+    const spotifyURL = await getSongResponse(message);
     res.status(200).json({ url: spotifyURL });
   } catch (error) {
     res.status(500).json({ error: error.message });

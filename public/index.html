@@ -17,9 +17,11 @@
     });
 
     if (response.ok) {
-      console.log("getting a response back: ");
-      const jsonResponse = await response.json(); // Parse the JSON response
-      console.log(jsonResponse.url); // Make sure 'response' is the correct property
+      response.json().then(jsonResponse => {
+          console.log("URL: " + JSON.stringify(jsonResponse.url)); // Log the 'url' property from the JSON response
+        }).catch(error => {
+          console.error('Error parsing JSON:', error);
+        });
     } else {
       console.error('Failed to send message');
     }
