@@ -11,9 +11,9 @@ let conversationHistory = [
   {
     role: "system",
     content:
-      "You will be provided with a description of an activity and will respond with a single BPM number for music that would be ideal for that activity along with a potential genre(s) of music from the following list: " +
+      "Given a description of an activity, return a JSON object with 4 fields, the first is 'bpm' which is a single number representing the most ideal bpm of music for that activity, the second is 'genre' which is a set of 1 or more genres that would be ideal for that activity from the following list: " +
       genreSeeds.join(", ") +
-      ". Only say a number for the bpm and no other words. You can have multiple genres. Return in JSON format with lowercase. The key for genres in the JSON object is 'genre'",
+      ",the third is 'energy' and is a single decimal between 0 and 1 representing what level of energy an activity has,and last is 'danceability' which is a single decimal between 0 and 1 representing how much you'd want to dance in the activity described. Only say a number for the bpm and no other words. Return in JSON format with all keys and values in lowercase.",
   },
 ];
 

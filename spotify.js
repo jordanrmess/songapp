@@ -1,3 +1,4 @@
+import { parse } from "dotenv";
 import SpotifyWebApi from "spotify-web-api-node";
 
 //Spotify API request code here:
@@ -19,7 +20,10 @@ export async function getSong(songInfo) {
   let genre = "";
   spotifyApi.setAccessToken(data.body["access_token"]);
   const parsedSongInfo = JSON.parse(songInfo);
-  const BPM = parsedSongInfo.BPM;
+  console.log(parsedSongInfo);
+  const bpm = parsedSongInfo.bpm;
+  const target_danceability = parsedSongInfo.danceability;
+  const energy = parse.energy;
   genre = parsedSongInfo.genre;
 
   if (typeof genre === "object" && genre !== null) {
@@ -34,7 +38,9 @@ export async function getSong(songInfo) {
 
   const recommendations = await spotifyApi.getRecommendations({
     seed_genres: genre,
-    target_tempo: BPM,
+    min_danceability: target_danceability,
+    target_energy: energy,
+    target_tempo: bpm,
     limit: 1,
   });
 
