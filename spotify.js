@@ -46,5 +46,6 @@ export async function getSong(songInfo) {
 
   let song = recommendations.body.tracks[0];
   let songUrl = song.external_urls.spotify;
-  return songUrl;
+  let songURI = song.uri;
+  return songURI;
 }

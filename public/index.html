@@ -1,37 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Song App</title>
-<script>
-  async function sendMessage(event) {
-    event.preventDefault();
-    var message = document.getElementById('message').value;
-    
-    const response = await fetch('/message', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ message: message })
-    });
+  <head>
+    <meta charset="UTF-8" />
+    <title>Song App</title>
+    <script>
+      async function sendMessage(event) {
+        event.preventDefault();
+        var message = document.getElementById("message").value;
 
-    if (response.ok) {
-      response.json().then(jsonResponse => {
-          console.log("URL: " + JSON.stringify(jsonResponse.url)); // Log the 'url' property from the JSON response
-        }).catch(error => {
-          console.error('Error parsing JSON:', error);
+        const response = await fetch("/message", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: message }),
         });
-    } else {
-      console.error('Failed to send message');
-    }
-  }
-</script>
-</head>
-<body>
+
+        if (response.ok) {
+          response
+            .json()
+            .then((jsonResponse) => {
+              console.log("uri: " + JSON.stringify(jsonResponse.url));
+              updateSpotifyURI(jsonResponse.url);
+            })
+            .catch((error) => {
+              console.error("Error parsing JSON:", error);
+            });
+        } else {
+          console.error("Failed to send message");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+    <script>
+      window.onSpotifyIframeApiReady = (IFrameAPI) => {
+        const element = document.getElementById("embed-iframe");
+        let embedController; // This will hold the reference to the EmbedController
+
+        // Function to update the Spotify URI
+        window.updateSpotifyURI = (newURI) => {
+          if (embedController) {
+            embedController.loadUri(newURI); // Use the loadUri method to update the URI
+          }
+        };
+
+        // Initialize the iframe with the default URI and store the EmbedController reference
+        IFrameAPI.createController(
+          element,
+          { uri: "spotify:episode:7makk4oTQel546B0PZlDM5" },
+          (controller) => {
+            embedController = controller; // Store the EmbedController reference
+            // Additional logic after iframe initialization can be added here
+          }
+        );
+      };
+    </script>
+    <div id="embed-iframe"></div>
     <form onsubmit="return sendMessage(event);">
-      <input type="text" id="message" placeholder="Enter your message">
+      <input type="text" id="message" placeholder="Enter your message" />
       <button type="submit">Send</button>
     </form>
-</body>
+    <div id="embed-iframe"></div>
+  </body>
 </html>
